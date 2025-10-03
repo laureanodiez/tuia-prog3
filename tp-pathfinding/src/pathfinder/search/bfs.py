@@ -24,20 +24,24 @@ class BreadthFirstSearch:
         reached[root.state] = True
         
         if grid.objective_test(root.state):
-            return Solution(root, reached
-
-                    )
+            return Solution(root, reached)
         # Initialize frontier with the root node
 
         frontera = QueueFrontier()
-        frontera.add
+        frontera.add(root)
 
         # TODO Complete the rest!!
         # ...
-        if frontera.is_empty()
-            return NoSolution(root, reached)
+        while True: 
+            if frontera.is_empty():
+                    return NoSolution(reached)
 
-        nodo = frontera.remove 
-
-        for acciones in grid.actions(nodo.state)
-            sucesor = grid.actions(nodo.state, acciones)
+            nodo = frontera.remove()  
+            for accion in grid.actions(nodo.state):
+                sucesor = grid.result(nodo.state, accion)
+                if sucesor not in reached: 
+                    Nhijo = Node("", sucesor, nodo.cost + grid.individual_cost(nodo.state, accion), nodo, accion)
+                    if grid.objective_test(sucesor): 
+                        return Solution(Nhijo, reached)
+                    reached[sucesor] = True 
+                    frontera.add(Nhijo)
